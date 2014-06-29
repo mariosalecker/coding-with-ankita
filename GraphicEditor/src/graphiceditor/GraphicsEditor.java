@@ -1,87 +1,41 @@
 package graphiceditor;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+/*
+ * I did some changes to the code, Ankita, have a look. I will put my comments
+ * in these normal block comments. 
+ *
+ */
+/**
+ * Entry point for the Graphic Editor program.
+ *
+ */
+public class GraphicsEditor {
 
-public class GraphicsEditor extends JPanel implements ActionListener {
-
+	/**
+	 * Starts the Graphic Editor.
+	 * @param args no parameters are required.
+	 */
 	public static void main(String[] args) {
 		System.out.println("Welcome");
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				createEditor();
-			}
-		});
-	}
-	
-	public static void createEditor(){
-		JFrame frame = new JFrame("GraphicEditor");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JLabel label = new JLabel("Paint");
-		frame.getContentPane().add(label);
-		frame.setSize(1800, 600);
-		frame.setLocation(300, 300);
-		frame.setResizable(false);
-		
-		JPanel panel = new JPanel() {
-	        Point pointStart = null;
-	        Point pointEnd   = null;
-	        {
-	            addMouseListener(new MouseAdapter() {
-	                public void mousePressed(MouseEvent e) {
-	                    pointStart = e.getPoint();
-	                }
-
-	                public void mouseReleased(MouseEvent e) {
-	                    pointStart = null;
-	                }
-	            });
-	            addMouseMotionListener(new MouseMotionAdapter() {
-	                public void mouseMoved(MouseEvent e) {
-	                    pointEnd = e.getPoint();
-	                }
-
-	                public void mouseDragged(MouseEvent e) {
-	                    pointEnd = e.getPoint();
-	                    repaint();
-	                }
-	            });
-	        }
-	    
-		
-	    public void paint(Graphics g) {
-		        super.paint(g);
-		        if (pointStart != null) {
-		            g.setColor(Color.RED);
-		            g.drawLine(pointStart.x, pointStart.y, pointEnd.x, pointEnd.y);
-		        }
-		    }
-		};
-		frame.add(panel);
-		frame.pack();
-		frame.setVisible(true);
+		/*
+		 * This is a new Java 8 feature, and will only compile if you have Java
+		 * 8 installed. This is a so called lambda expression and replaces
+		 * basically this code: new Runnable() {
+		 * 
+		 * @Override public void run() { createEditor(); } }
+		 */
+		javax.swing.SwingUtilities.invokeLater(() -> createEditor());
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+	/*
+	 * Previously we created a JFrame here and set various attributes on it to display it.
+	 * In general I prefer to extract into a new class. We create a specific JFrame with 
+	 * a specific set of data and operations, which qualifies for creating a new class.
+	 * Also we don't have to use static methods then, we just have a normal class. 
+	 */
+	private static void createEditor() {
+		EditorFrame frame = new EditorFrame();
+		frame.display();
 	}
-	
-
-   
 }
